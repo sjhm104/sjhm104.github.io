@@ -6,18 +6,13 @@
     <lastmod>2020-09-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="en-us"
                 href="https://sjhm104.github.io/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -34,18 +29,13 @@
     <lastmod>2020-09-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="en-us"
                 href="https://sjhm104.github.io/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/categories/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -62,13 +52,8 @@
     <lastmod>2020-09-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/p/test-chinese/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/p/test-chinese/"
+                hreflang="en-us"
+                href="https://sjhm104.github.io/p/test-chinese/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -80,13 +65,8 @@
     <lastmod>2020-09-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/post/"
+                hreflang="en-us"
+                href="https://sjhm104.github.io/post/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -103,16 +83,6 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/categories/test/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/categories/test/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="ja"
                 href="https://sjhm104.github.io/ja/categories/test/"
                 />
@@ -123,18 +93,13 @@
     <loc>https://sjhm104.github.io/ja/tags/</loc>
     <xhtml:link
                 rel="alternate"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="en-us"
                 href="https://sjhm104.github.io/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/tags/"
                 />
     <xhtml:link
                 rel="alternate"

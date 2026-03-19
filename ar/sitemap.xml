@@ -6,8 +6,8 @@
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
-                href="https://sjhm104.github.io/categories/"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -16,13 +16,8 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/categories/"
+                hreflang="en-us"
+                href="https://sjhm104.github.io/categories/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -34,6 +29,11 @@
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="en-us"
                 href="https://sjhm104.github.io/tags/"
                 />
@@ -41,16 +41,6 @@
                 rel="alternate"
                 hreflang="ja"
                 href="https://sjhm104.github.io/ja/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/tags/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -84,8 +74,8 @@
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
-                href="https://sjhm104.github.io/"
+                hreflang="en"
+                href="https://sjhm104.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -94,13 +84,8 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://sjhm104.github.io/zh-cn/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://sjhm104.github.io/zh-tw/"
+                hreflang="en-us"
+                href="https://sjhm104.github.io/"
                 />
     <xhtml:link
                 rel="alternate"
