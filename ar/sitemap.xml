@@ -39,6 +39,11 @@
                 />
     <xhtml:link
                 rel="alternate"
+                hreflang="ja"
+                href="https://sjhm104.github.io/ja/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="zh-cn"
                 href="https://sjhm104.github.io/zh-cn/tags/"
                 />
@@ -46,11 +51,6 @@
                 rel="alternate"
                 hreflang="zh-tw"
                 href="https://sjhm104.github.io/zh-tw/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="https://sjhm104.github.io/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
