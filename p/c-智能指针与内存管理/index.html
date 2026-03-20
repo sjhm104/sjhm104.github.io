@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="C++ 智能指针与内存管理 C++ 没有自动垃圾回收，手动管理内存极易产生泄漏或悬空指针。智能指针（Smart Pointer）通过 RAII（资源获取即初始化）机制，在对象生命周期结束时自动释放资源，是现代 C++ 推荐的内存管理方式。C++11 引入三种智能指针，均定义在 &lt;memory&gt; 头文件中：\n">
+<title>C&#43;&#43;智能指针与内存管理</title>
+
+<link rel='canonical' href='https://sjhm104.github.io/p/c-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/'>
+
+<link rel="stylesheet" href="/scss/style.min.c2a8ee04503ae68bdbcc09400aa453b940395006169bdfa31bbe36c8a96329b3.css"><meta property='og:title' content="C++智能指针与内存管理">
+<meta property='og:description' content="C++ 智能指针与内存管理 C++ 没有自动垃圾回收，手动管理内存极易产生泄漏或悬空指针。智能指针（Smart Pointer）通过 RAII（资源获取即初始化）机制，在对象生命周期结束时自动释放资源，是现代 C++ 推荐的内存管理方式。C++11 引入三种智能指针，均定义在 &lt;memory&gt; 头文件中：\n">
+<meta property='og:url' content='https://sjhm104.github.io/p/c-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/'>
+<meta property='og:site_name' content='奥古斯都-Augustus'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:tag' content='C&#43;&#43;11' /><meta property='article:published_time' content='2026-03-20T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-03-20T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="C++智能指针与内存管理">
+<meta name="twitter:description" content="C++ 智能指针与内存管理 C++ 没有自动垃圾回收，手动管理内存极易产生泄漏或悬空指针。智能指针（Smart Pointer）通过 RAII（资源获取即初始化）机制，在对象生命周期结束时自动释放资源，是现代 C++ 推荐的内存管理方式。C++11 引入三种智能指针，均定义在 &lt;memory&gt; 头文件中：\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_53310274393b1fef.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">奥古斯都-Augustus</a></h1>
+            <h2 class="site-description">欢迎来到我的网站</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#stdunique_ptr--独占所有权"><code>std::unique_ptr</code> —— 独占所有权</a>
+      <ol>
+        <li><a href="#初始化与基本操作">初始化与基本操作</a></li>
+        <li><a href="#自定义删除器">自定义删除器</a></li>
+        <li><a href="#常用场景">常用场景</a></li>
+      </ol>
+    </li>
+    <li><a href="#stdshared_ptr--共享所有权与引用计数"><code>std::shared_ptr</code> —— 共享所有权与引用计数</a>
+      <ol>
+        <li><a href="#初始化与引用计数">初始化与引用计数</a></li>
+        <li><a href="#自定义删除器-1">自定义删除器</a></li>
+        <li><a href="#获取原始指针">获取原始指针</a></li>
+        <li><a href="#线程安全说明">线程安全说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#stdweak_ptr--打破循环引用"><code>std::weak_ptr</code> —— 打破循环引用</a>
+      <ol>
+        <li><a href="#基本用法">基本用法</a></li>
+        <li><a href="#解决循环引用">解决循环引用</a></li>
+        <li><a href="#返回管理-this-的-shared_ptr">返回管理 <code>this</code> 的 <code>shared_ptr</code></a></li>
+      </ol>
+    </li>
+    <li><a href="#总结与建议">总结与建议</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/c&#43;&#43;/" style="background-color: hsl(240, 60%, 84%); color: hsl(240, 60%, 15%);">
+                C&#43;&#43;
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/c-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">C&#43;&#43;智能指针与内存管理</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-03-20T00:00:00Z'>2026-03-20</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="c-智能指针与内存管理">C++ 智能指针与内存管理
+</h1><p>C++ 没有自动垃圾回收，手动管理内存极易产生泄漏或悬空指针。智能指针（Smart Pointer）通过 RAII（资源获取即初始化）机制，在对象生命周期结束时自动释放资源，是现代 C++ 推荐的内存管理方式。C++11 引入三种智能指针，均定义在 <code>&lt;memory&gt;</code> 头文件中：</p>
+<ul>
+<li><strong><code>std::unique_ptr</code></strong>：独占所有权，不可复制，只能移动。</li>
+<li><strong><code>std::shared_ptr</code></strong>：共享所有权，通过引用计数管理资源。</li>
+<li><strong><code>std::weak_ptr</code></strong>：弱引用，配合 <code>shared_ptr</code> 使用，解决循环引用。</li>
+</ul>
+<hr>
+<h2 id="stdunique_ptr--独占所有权"><code>std::unique_ptr</code> —— 独占所有权
+</h2><p><code>unique_ptr</code> 对资源拥有唯一所有权，<strong>不能复制，只能移动</strong>。它轻量高效，几乎没有额外开销。</p>
+<h3 id="初始化与基本操作">初始化与基本操作
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// C++11 方式
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">42</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// C++14 推荐使用 make_unique（更安全，避免显式 new）
+</span></span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 不能复制
+</span></span></span><span class="line"><span class="cl"><span class="c1">// auto p3 = p1;                // 编译错误
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 可以移动（所有权转移）
+</span></span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>        <span class="c1">// p1 现在为 nullptr
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 获取原始指针（谨慎使用）
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">p2</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 释放所有权并返回原始指针
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">released</span> <span class="o">=</span> <span class="n">p3</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>   <span class="c1">// p3 变为 nullptr，需要手动 delete released
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 重置：释放当前管理的对象，可指向新对象
+</span></span></span><span class="line"><span class="cl"><span class="n">p2</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">50</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="自定义删除器">自定义删除器
+</h3><p><code>unique_ptr</code> 的删除器是类型的一部分，因此需要在模板参数中指定。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 函数指针作为删除器
+</span></span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">deleter</span> <span class="o">=</span> <span class="p">[](</span><span class="n">FILE</span><span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">FILE</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="n">deleter</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">filePtr</span><span class="p">(</span><span class="n">fopen</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">),</span> <span class="n">deleter</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 若删除器是无捕获 lambda，可直接使用（C++11 需函数指针，C++14 泛型 lambda 支持）
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">ptr</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="p">[](</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="n">p</span><span class="p">;</span> <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>若删除器捕获了变量，则无法转换为函数指针，需使用 <code>std::function</code> 包装：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">lambda</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="n">p</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">;</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">ptr</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">lambda</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="常用场景">常用场景
+</h3><ul>
+<li><strong>工厂函数返回独占对象</strong>：函数返回 <code>unique_ptr</code> 转移所有权给调用者。</li>
+<li><strong>作为类成员</strong>：表示对象独占某资源。</li>
+<li><strong>放入容器</strong>：容器存放 <code>unique_ptr</code> 时需使用移动语义（如 <code>push_back(std::move(ptr))</code>）。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">vec</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>   <span class="c1">// 移动构造
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="stdshared_ptr--共享所有权与引用计数"><code>std::shared_ptr</code> —— 共享所有权与引用计数
+</h2><p><code>shared_ptr</code> 允许多个指针共享同一资源，内部维护一个引用计数，计数为 0 时自动释放资源。</p>
+<h3 id="初始化与引用计数">初始化与引用计数
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">sp1</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>   <span class="c1">// 推荐，只分配一次内存（控制块+对象）
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sp1</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>             <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">sp2</span> <span class="o">=</span> <span class="n">sp1</span><span class="p">;</span>                            <span class="c1">// 拷贝构造，引用计数 +1
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sp1</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>               <span class="c1">// 2
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sp2</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>                                <span class="c1">// 引用计数 -1
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sp1</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>               <span class="c1">// 1
+</span></span></span><span class="line"><span class="cl"><span class="c1">// sp1 离开作用域后计数归零，内存释放
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>重要</strong>：不要用同一个裸指针初始化多个 <code>shared_ptr</code>，否则会导致多个独立的控制块，造成重复释放。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sp1</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sp2</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>   <span class="c1">// 危险！sp1 和 sp2 各自管理 p，会双重释放
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="自定义删除器-1">自定义删除器
+</h3><p><code>shared_ptr</code> 的删除器类型擦除，无需在模板参数中指定。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="p">[](</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span><span class="p">[]</span> <span class="n">p</span><span class="p">;</span> <span class="p">});</span>   <span class="c1">// 数组删除器
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 或使用 std::default_delete
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sp2</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">std</span><span class="o">::</span><span class="n">default_delete</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="获取原始指针">获取原始指针
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">sp</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>    <span class="c1">// 不增加引用计数，需确保 sp 未释放
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="线程安全说明">线程安全说明
+</h3><ul>
+<li>引用计数的增减是原子操作，线程安全。</li>
+<li>但 <code>shared_ptr</code> 对象本身的读写（如多个线程同时修改同一个 <code>shared_ptr</code> 变量）不是线程安全的，需要外部同步。</li>
+</ul>
+<hr>
+<h2 id="stdweak_ptr--打破循环引用"><code>std::weak_ptr</code> —— 打破循环引用
+</h2><p><code>weak_ptr</code> 是 <code>shared_ptr</code> 的助手，<strong>不增加引用计数</strong>，用于观测资源是否存活，不拥有资源。它不能直接解引用，必须通过 <code>lock()</code> 获取一个有效的 <code>shared_ptr</code> 才能访问资源。</p>
+<h3 id="基本用法">基本用法
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sp</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">weak_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">wp</span> <span class="o">=</span> <span class="n">sp</span><span class="p">;</span>   <span class="c1">// 引用计数仍为 1
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="k">auto</span> <span class="n">locked</span> <span class="o">=</span> <span class="n">wp</span><span class="p">.</span><span class="n">lock</span><span class="p">())</span> <span class="p">{</span>   <span class="c1">// 获取 shared_ptr，若资源已释放则返回空
+</span></span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">locked</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">wp</span><span class="p">.</span><span class="n">expired</span><span class="p">();</span>        <span class="c1">// 返回 true 表示资源已释放
+</span></span></span><span class="line"><span class="cl"><span class="n">wp</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>                       <span class="c1">// 清空监测
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="解决循环引用">解决循环引用
+</h3><p>循环引用会导致 <code>shared_ptr</code> 计数永远不为 0，内存泄漏。典型场景是双向链表或父子互相指向。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">next</span><span class="p">;</span>   <span class="c1">// 问题所在！
+</span></span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Node</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;~Node</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>   <span class="c1">// 循环引用，a 和 b 的引用计数均为 2，无法归零，析构函数不会调用！
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>解决方案</strong>：将其中一个成员改为 <code>weak_ptr</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">next</span><span class="p">;</span>   <span class="c1">// 改用 weak_ptr
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>   <span class="c1">// 不增加引用计数
+</span></span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 离开作用域后，a 和 b 的引用计数正常归零，析构函数调用
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="返回管理-this-的-shared_ptr">返回管理 <code>this</code> 的 <code>shared_ptr</code>
+</h3><p>若需要在类内部返回一个管理当前对象的 <code>shared_ptr</code>，直接使用 <code>this</code> 构造会导致多个控制块。应继承 <code>std::enable_shared_from_this&lt;T&gt;</code>，并调用 <code>shared_from_this()</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Test</span> <span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&gt;</span> <span class="n">getShared</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">shared_from_this</span><span class="p">();</span>   <span class="c1">// 内部使用 weak_ptr 监测 this
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">sp</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&gt;</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">sp2</span> <span class="o">=</span> <span class="n">sp</span><span class="o">-&gt;</span><span class="n">getShared</span><span class="p">();</span>   <span class="c1">// sp2 与 sp 共享同一控制块，引用计数正常增加
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>注意</strong>：必须在已经存在 <code>shared_ptr</code> 管理当前对象的情况下才能调用 <code>shared_from_this()</code>，否则会抛出异常。</p>
+<hr>
+<h2 id="总结与建议">总结与建议
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>智能指针</th>
+          <th>特点</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>unique_ptr</code></td>
+          <td>独占所有权，轻量，无额外开销</td>
+          <td>资源唯一所有，工厂函数返回值，容器元素</td>
+      </tr>
+      <tr>
+          <td><code>shared_ptr</code></td>
+          <td>共享所有权，引用计数，稍重</td>
+          <td>多个所有者，缓存，对象生命周期需动态管理</td>
+      </tr>
+      <tr>
+          <td><code>weak_ptr</code></td>
+          <td>不控制生命周期，观测 <code>shared_ptr</code> 资源</td>
+          <td>打破循环引用，缓存（弱回调），可选依赖</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>最佳实践</strong>：</p>
+<ul>
+<li>尽量使用 <code>make_unique</code> / <code>make_shared</code>，避免显式 <code>new</code>。</li>
+<li>优先选用 <code>unique_ptr</code>，只有在需要共享所有权时才用 <code>shared_ptr</code>。</li>
+<li>使用 <code>weak_ptr</code> 打破循环引用，但不要长期持有 <code>lock()</code> 返回的 <code>shared_ptr</code>。</li>
+<li>从智能指针获取裸指针仅用于与遗留 C API 交互，且必须确保智能指针未释放。</li>
+<li>不要将同一个裸指针交给多个独立的智能指针管理。</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+        
+            <a href="/tags/c&#43;&#43;11/">C&#43;&#43;11</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/c-%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">C&#43;&#43;类型推导与初始化</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+        <div class="pre-next">
+        
+            <a class="pre-next-btn bg" href="https://sjhm104.github.io/p/c-%E9%9D%A2%E7%BB%8F%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2%E7%89%88/">&lt;&lt; C&#43;&#43;面经（测试博客版）</a>
+        
+        
+            <a class="pre-next-btn bg" href="https://sjhm104.github.io/p/c-%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96/">C&#43;&#43;类型推导与初始化 >></a>
+        
+    </div>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 奥古斯都-Augustus
+    </section>
+    
+    
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.739a746ae2bbf55a68cb59a8d6a5a442761042614bfcbc170d98bca382eaca22.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://sjhm104.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+<div id="particles-js"></div>
+
+<script src=https://sjhm104.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://sjhm104.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+
+
+<div id="aplayer"></div>
+
+<script>
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    fixed: true,
+    lrcType: 3,
+    autoplay: false, 
+    theme: '#FADFA3',
+    loop: 'all',
+    preload: 'auto',
+    volume: 0.7,
+    mutex: true,
+    listFolded: false,
+    listMaxHeight: '250px',
+    audio: [
+        
+        {
+            name: 'Anywhere Is',
+            artist: 'Enya', 
+            url: 'https:\/\/sjhm104.github.io\/music\/Anywhere%20Is.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/Anywhere%20Is.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/Anywhere%20Is.lrc',
+        },
+        {
+            name: 'Yellow',
+            artist: 'Coldplay',
+            url: 'https:\/\/sjhm104.github.io\/music\/Yellow.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/Yellow.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/Yellow.lrc',
+        },
+        {
+            name: '百年孤寂',
+            artist: '王菲', 
+            url: 'https:\/\/sjhm104.github.io\/music\/%E7%99%BE%E5%B9%B4%E5%AD%A4%E5%AF%82.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/%E7%99%BE%E5%B9%B4%E5%AD%A4%E5%AF%82.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/%E7%99%BE%E5%B9%B4%E5%AD%A4%E5%AF%82.lrc',
+        },
+        {
+            name: '词不达意',
+            artist: '林忆莲', 
+            url: 'https:\/\/sjhm104.github.io\/music\/%E8%AF%8D%E4%B8%8D%E8%BE%BE%E6%84%8F.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/%E8%AF%8D%E4%B8%8D%E8%BE%BE%E6%84%8F.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/%E8%AF%8D%E4%B8%8D%E8%BE%BE%E6%84%8F.lrc',
+        },
+        {
+            name: '匆匆那年',
+            artist: '王菲', 
+            url: 'https:\/\/sjhm104.github.io\/music\/%E5%8C%86%E5%8C%86%E9%82%A3%E5%B9%B4.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/%E5%8C%86%E5%8C%86%E9%82%A3%E5%B9%B4.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/%E5%8C%86%E5%8C%86%E9%82%A3%E5%B9%B4.lrc',
+        },
+        {
+            name: '虚拟',
+            artist: '陈粒', 
+            url: 'https:\/\/sjhm104.github.io\/music\/%E8%99%9A%E6%8B%9F.mp3',
+            cover: 'https:\/\/sjhm104.github.io\/music\/%E8%99%9A%E6%8B%9F.jpg',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/%E8%99%9A%E6%8B%9F.lrc',
+        },
+        {
+            name: '至少还有你',
+            artist: '林忆莲', 
+            url: 'https:\/\/sjhm104.github.io\/music\/%E8%87%B3%E5%B0%91%E8%BF%98%E6%9C%89%E4%BD%A0.mp3',
+            cover: 'https://picsum.photos/seed/zhishao/300/300',
+            lrc: 'https:\/\/sjhm104.github.io\/music\/%E8%87%B3%E5%B0%91%E8%BF%98%E6%9C%89%E4%BD%A0.lrc',
+        }
+    ]
+});
+
+
+
+
+
+window.onbeforeunload = () => {
+    const playInfo = {
+        index: ap.list.index,
+        currentTime: ap.audio.currentTime,
+        paused: ap.audio.paused 
+    };
+    try {
+        localStorage.setItem("playInfo", JSON.stringify(playInfo));
+    } catch (e) {
+        console.error("保存播放状态失败", e);
+    }
+};
+
+
+
+window.onload = () => {
+    const playInfoStr = localStorage.getItem("playInfo");
+    if (!playInfoStr) return;
+
+    try {
+        const playInfo = JSON.parse(playInfoStr);
+        
+        
+        if (playInfo.index < 0 || playInfo.index >= ap.list.audios.length) return;
+
+        
+        ap.list.switch(playInfo.index);
+
+        
+        const restorePlayStatus = () => {
+            
+            ap.seek(playInfo.currentTime);
+            
+            
+            if (!playInfo.paused) {
+                ap.play();
+            }
+            
+            ap.audio.removeEventListener('canplay', restorePlayStatus);
+        };
+
+        
+        
+        ap.audio.addEventListener('canplay', restorePlayStatus);
+
+        
+        setTimeout(() => {
+            
+            if (ap.audio.currentTime < 1 && Math.abs(ap.audio.currentTime - playInfo.currentTime) > 1) {
+                restorePlayStatus();
+            }
+        }, 2000);
+
+    } catch (e) {
+        console.error("读取播放状态失败", e);
+    }
+};
+</script>
+
+
+
+
+
+
+    </body>
+</html>

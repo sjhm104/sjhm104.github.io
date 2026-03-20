@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://sjhm104.github.io/p/c-%E9%9D%A2%E7%BB%8F%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2%E7%89%88/'>
 
-<link rel="stylesheet" href="/scss/style.min.4a00bff9f16c0371854537ef7c65b6793ca35bf63366682cd64de0d44124f4f5.css"><meta property='og:title' content="C++面经（测试博客版）">
+<link rel="stylesheet" href="/scss/style.min.c2a8ee04503ae68bdbcc09400aa453b940395006169bdfa31bbe36c8a96329b3.css"><meta property='og:title' content="C++面经（测试博客版）">
 <meta property='og:description' content="1. 现代C++新特性 1.1 类型推导与初始化 auto 类型推导 auto 是C++11引入的关键字，让编译器根据初始化表达式自动推导变量类型，减少冗长的类型书写。\n基本用法：\n">
 <meta property='og:url' content='https://sjhm104.github.io/p/c-%E9%9D%A2%E7%BB%8F%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2%E7%89%88/'>
 <meta property='og:site_name' content='奥古斯都-Augustus'>
@@ -267,66 +267,226 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#1-现代c新特性">1. 现代C++新特性</a>
+    <li><a href="#11-类型推导与初始化">1.1 类型推导与初始化</a>
       <ol>
-        <li><a href="#11-类型推导与初始化">1.1 类型推导与初始化</a></li>
-        <li><a href="#12-智能指针与内存管理">1.2 智能指针与内存管理</a></li>
-        <li><a href="#13-右值引用与移动语义">1.3 右值引用与移动语义</a></li>
-        <li><a href="#14-lambda-表达式">1.4 Lambda 表达式</a></li>
-        <li><a href="#15-并发与多线程支持">1.5 并发与多线程支持</a></li>
-        <li><a href="#16-语言特性增强">1.6 语言特性增强</a></li>
-        <li><a href="#17-模板增强">1.7 模板增强</a></li>
-        <li><a href="#18-类型-traits-与元编程">1.8 类型 Traits 与元编程</a></li>
-        <li><a href="#19-标准库新组件">1.9 标准库新组件</a></li>
-        <li><a href="#110-协程简介c20">1.10 协程简介（C++20）</a></li>
+        <li><a href="#auto-类型推导">auto 类型推导</a></li>
+        <li><a href="#decltype-说明符">decltype 说明符</a></li>
+        <li><a href="#返回类型后置trailing-return-type">返回类型后置（Trailing Return Type）</a></li>
+        <li><a href="#列表初始化与-initializer_list">列表初始化与 initializer_list</a></li>
+        <li><a href="#nullptr">nullptr</a></li>
       </ol>
     </li>
-    <li><a href="#2-linux环境编程与系统编程">2. Linux环境编程与系统编程</a>
+    <li><a href="#12-智能指针与内存管理">1.2 智能指针与内存管理</a>
       <ol>
-        <li><a href="#21-多线程编程">2.1 多线程编程</a></li>
-        <li><a href="#22-进程间通信ipc">2.2 进程间通信（IPC）</a></li>
-        <li><a href="#23-网络编程">2.3 网络编程</a></li>
-        <li><a href="#24-linux-常用命令与调试工具">2.4 Linux 常用命令与调试工具</a></li>
+        <li><a href="#stdunique_ptr--独占所有权">std::unique_ptr — 独占所有权</a></li>
+        <li><a href="#stdshared_ptr--共享所有权与引用计数">std::shared_ptr — 共享所有权与引用计数</a></li>
+        <li><a href="#stdweak_ptr--打破循环引用">std::weak_ptr — 打破循环引用</a></li>
       </ol>
     </li>
-    <li><a href="#3-数据结构与算法">3. 数据结构与算法</a>
+    <li><a href="#13-右值引用与移动语义">1.3 右值引用与移动语义</a>
       <ol>
-        <li><a href="#31-基础数据结构">3.1 基础数据结构</a></li>
-        <li><a href="#32-高级数据结构">3.2 高级数据结构</a></li>
-        <li><a href="#33-常用算法">3.3 常用算法</a></li>
-        <li><a href="#34-算法复杂度分析">3.4 算法复杂度分析</a></li>
+        <li><a href="#左值与右值的概念">左值与右值的概念</a></li>
+        <li><a href="#右值引用与万能引用">右值引用与万能引用</a></li>
+        <li><a href="#stdmove-的作用与实现">std::move 的作用与实现</a></li>
+        <li><a href="#移动构造函数与移动赋值运算符">移动构造函数与移动赋值运算符</a></li>
+        <li><a href="#完美转发stdforward">完美转发（std::forward）</a></li>
       </ol>
     </li>
-    <li><a href="#4-数据库与缓存">4. 数据库与缓存</a>
+    <li><a href="#14-lambda-表达式">1.4 Lambda 表达式</a>
       <ol>
-        <li><a href="#41-sqlite">4.1 SQLite</a></li>
-        <li><a href="#42-redis">4.2 Redis</a></li>
-        <li><a href="#43-mysql">4.3 MySQL</a></li>
+        <li><a href="#基本语法">基本语法</a></li>
+        <li><a href="#捕获方式">捕获方式</a></li>
+        <li><a href="#泛型-lambdac14">泛型 Lambda（C++14）</a></li>
+        <li><a href="#mutable-lambda">mutable Lambda</a></li>
+        <li><a href="#捕获-thisc17">捕获 *this（C++17）</a></li>
+        <li><a href="#底层实现原理">底层实现原理</a></li>
       </ol>
     </li>
-    <li><a href="#5-系统设计与架构">5. 系统设计与架构</a>
+    <li><a href="#15-并发与多线程支持">1.5 并发与多线程支持</a>
       <ol>
-        <li><a href="#51-设计原则">5.1 设计原则</a></li>
-        <li><a href="#52-常见设计模式">5.2 常见设计模式</a></li>
-        <li><a href="#53-限流算法">5.3 限流算法</a></li>
+        <li><a href="#stdthread--创建与管理线程">std::thread — 创建与管理线程</a></li>
+        <li><a href="#线程同步机制">线程同步机制</a></li>
+        <li><a href="#条件变量stdcondition_variable">条件变量（std::condition_variable）</a></li>
+        <li><a href="#原子操作stdatomic与内存顺序">原子操作（std::atomic）与内存顺序</a></li>
+        <li><a href="#异步任务stdasyncstdfuturestdpromise">异步任务：std::async、std::future、std::promise</a></li>
+        <li><a href="#thread_local--线程局部存储">thread_local — 线程局部存储</a></li>
       </ol>
     </li>
-    <li><a href="#6-计算机网络与协议">6. 计算机网络与协议</a>
+    <li><a href="#16-语言特性增强">1.6 语言特性增强</a>
       <ol>
-        <li><a href="#61-网络模型">6.1 网络模型</a></li>
-        <li><a href="#62-tcp-详解">6.2 TCP 详解</a></li>
-        <li><a href="#63-httphttps">6.3 HTTP/HTTPS</a></li>
-        <li><a href="#64-websocket">6.4 WebSocket</a></li>
-        <li><a href="#65-dns-解析过程">6.5 DNS 解析过程</a></li>
+        <li><a href="#基于范围的-for-循环">基于范围的 for 循环</a></li>
+        <li><a href="#强类型枚举enum-class">强类型枚举（enum class）</a></li>
+        <li><a href="#override-和-final">override 和 final</a></li>
+        <li><a href="#默认和删除函数-default-delete">默认和删除函数（= default、= delete）</a></li>
+        <li><a href="#委托构造函数与继承构造函数">委托构造函数与继承构造函数</a></li>
+        <li><a href="#非静态数据成员默认初始化">非静态数据成员默认初始化</a></li>
+        <li><a href="#constexpr--编译期常量表达式">constexpr — 编译期常量表达式</a></li>
+        <li><a href="#结构化绑定c17">结构化绑定（C++17）</a></li>
+        <li><a href="#属性attributes">属性（Attributes）</a></li>
       </ol>
     </li>
-    <li><a href="#7-工具与工程化">7. 工具与工程化</a>
+    <li><a href="#17-模板增强">1.7 模板增强</a>
       <ol>
-        <li><a href="#71-git-常用命令">7.1 Git 常用命令</a></li>
-        <li><a href="#72-cmake-构建系统">7.2 CMake 构建系统</a></li>
-        <li><a href="#73-单元测试google-test">7.3 单元测试（Google Test）</a></li>
+        <li><a href="#可变参数模板variadic-templates">可变参数模板（Variadic Templates）</a></li>
+        <li><a href="#折叠表达式c17">折叠表达式（C++17）</a></li>
+        <li><a href="#模板别名using-">模板别名（using =）</a></li>
       </ol>
     </li>
+    <li><a href="#18-类型-traits-与元编程">1.8 类型 Traits 与元编程</a>
+      <ol>
+        <li><a href="#type_traits-库">type_traits 库</a></li>
+        <li><a href="#sfinae-与-enable_if">SFINAE 与 enable_if</a></li>
+        <li><a href="#void_tc17">void_t（C++17）</a></li>
+      </ol>
+    </li>
+    <li><a href="#19-标准库新组件">1.9 标准库新组件</a>
+      <ol>
+        <li><a href="#stdoptionalc17">std::optional（C++17）</a></li>
+        <li><a href="#stdvariantc17">std::variant（C++17）</a></li>
+        <li><a href="#stdstring_viewc17">std::string_view（C++17）</a></li>
+        <li><a href="#stdanyc17">std::any（C++17）</a></li>
+      </ol>
+    </li>
+    <li><a href="#110-协程简介c20">1.10 协程简介（C++20）</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#21-多线程编程">2.1 多线程编程</a>
+      <ol>
+        <li><a href="#用户态线程-vs-内核态线程">用户态线程 vs 内核态线程</a></li>
+        <li><a href="#pthread-vs-stdthread">pthread vs std::thread</a></li>
+        <li><a href="#互斥锁详解">互斥锁详解</a></li>
+        <li><a href="#读写锁">读写锁</a></li>
+        <li><a href="#信号量semaphore">信号量（Semaphore）</a></li>
+        <li><a href="#自旋锁">自旋锁</a></li>
+        <li><a href="#线程池设计">线程池设计</a></li>
+      </ol>
+    </li>
+    <li><a href="#22-进程间通信ipc">2.2 进程间通信（IPC）</a>
+      <ol>
+        <li><a href="#管道pipe">管道（Pipe）</a></li>
+        <li><a href="#共享内存">共享内存</a></li>
+        <li><a href="#ipc-方式对比">IPC 方式对比</a></li>
+      </ol>
+    </li>
+    <li><a href="#23-网络编程">2.3 网络编程</a>
+      <ol>
+        <li><a href="#字节序">字节序</a></li>
+        <li><a href="#tcp-编程流程">TCP 编程流程</a></li>
+        <li><a href="#tcp-三次握手与四次挥手">TCP 三次握手与四次挥手</a></li>
+        <li><a href="#epoll--高效io多路复用">epoll — 高效I/O多路复用</a></li>
+        <li><a href="#reactor-模式">Reactor 模式</a></li>
+      </ol>
+    </li>
+    <li><a href="#24-linux-常用命令与调试工具">2.4 Linux 常用命令与调试工具</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#31-基础数据结构">3.1 基础数据结构</a>
+      <ol>
+        <li><a href="#动态数组vector-实现原理">动态数组（vector 实现原理）</a></li>
+        <li><a href="#哈希表的原理">哈希表的原理</a></li>
+        <li><a href="#堆与优先队列">堆与优先队列</a></li>
+        <li><a href="#红黑树">红黑树</a></li>
+        <li><a href="#b树与b树">B树与B+树</a></li>
+      </ol>
+    </li>
+    <li><a href="#32-高级数据结构">3.2 高级数据结构</a>
+      <ol>
+        <li><a href="#跳表skip-list">跳表（Skip List）</a></li>
+        <li><a href="#lru-缓存实现">LRU 缓存实现</a></li>
+      </ol>
+    </li>
+    <li><a href="#33-常用算法">3.3 常用算法</a>
+      <ol>
+        <li><a href="#快速排序">快速排序</a></li>
+        <li><a href="#kmp-字符串匹配">KMP 字符串匹配</a></li>
+        <li><a href="#动态规划--背包问题">动态规划 — 背包问题</a></li>
+        <li><a href="#二分查找">二分查找</a></li>
+      </ol>
+    </li>
+    <li><a href="#34-算法复杂度分析">3.4 算法复杂度分析</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#41-sqlite">4.1 SQLite</a>
+      <ol>
+        <li><a href="#sqlite-架构与特点">SQLite 架构与特点</a></li>
+        <li><a href="#事务acid">事务（ACID）</a></li>
+        <li><a href="#wal-模式write-ahead-logging">WAL 模式（Write-Ahead Logging）</a></li>
+        <li><a href="#批量写入优化">批量写入优化</a></li>
+      </ol>
+    </li>
+    <li><a href="#42-redis">4.2 Redis</a>
+      <ol>
+        <li><a href="#数据结构底层实现">数据结构底层实现</a></li>
+        <li><a href="#持久化机制">持久化机制</a></li>
+        <li><a href="#缓存三大问题">缓存三大问题</a></li>
+      </ol>
+    </li>
+    <li><a href="#43-mysql">4.3 MySQL</a>
+      <ol>
+        <li><a href="#mvcc多版本并发控制">MVCC（多版本并发控制）</a></li>
+        <li><a href="#事务隔离级别">事务隔离级别</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#51-设计原则">5.1 设计原则</a>
+      <ol>
+        <li><a href="#solid-原则">SOLID 原则</a></li>
+      </ol>
+    </li>
+    <li><a href="#52-常见设计模式">5.2 常见设计模式</a>
+      <ol>
+        <li><a href="#单例模式线程安全">单例模式（线程安全）</a></li>
+        <li><a href="#工厂方法模式">工厂方法模式</a></li>
+        <li><a href="#观察者模式">观察者模式</a></li>
+        <li><a href="#策略模式">策略模式</a></li>
+      </ol>
+    </li>
+    <li><a href="#53-限流算法">5.3 限流算法</a>
+      <ol>
+        <li><a href="#令牌桶算法">令牌桶算法</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#61-网络模型">6.1 网络模型</a>
+      <ol>
+        <li><a href="#osi-七层模型从上到下">OSI 七层模型（从上到下）</a></li>
+        <li><a href="#tcpip-四层模型">TCP/IP 四层模型</a></li>
+      </ol>
+    </li>
+    <li><a href="#62-tcp-详解">6.2 TCP 详解</a>
+      <ol>
+        <li><a href="#流量控制滑动窗口">流量控制（滑动窗口）</a></li>
+        <li><a href="#拥塞控制">拥塞控制</a></li>
+        <li><a href="#tcp-粘包与拆包">TCP 粘包与拆包</a></li>
+      </ol>
+    </li>
+    <li><a href="#63-httphttps">6.3 HTTP/HTTPS</a>
+      <ol>
+        <li><a href="#http-状态码">HTTP 状态码</a></li>
+        <li><a href="#https-握手过程">HTTPS 握手过程</a></li>
+      </ol>
+    </li>
+    <li><a href="#64-websocket">6.4 WebSocket</a></li>
+    <li><a href="#65-dns-解析过程">6.5 DNS 解析过程</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#71-git-常用命令">7.1 Git 常用命令</a></li>
+    <li><a href="#72-cmake-构建系统">7.2 CMake 构建系统</a>
+      <ol>
+        <li><a href="#基本项目结构">基本项目结构</a></li>
+        <li><a href="#使用第三方库">使用第三方库</a></li>
+        <li><a href="#交叉编译">交叉编译</a></li>
+      </ol>
+    </li>
+    <li><a href="#73-单元测试google-test">7.3 单元测试（Google Test）</a></li>
   </ol>
 </nav>
         </div>
@@ -4486,6 +4646,8 @@ $$T(n) = aT(n/b) + f(n)$$<ul>
 
         <div class="pre-next">
         
+        
+            <a class="pre-next-btn bg" href="https://sjhm104.github.io/p/c-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">C&#43;&#43;智能指针与内存管理 >></a>
         
     </div>
 
