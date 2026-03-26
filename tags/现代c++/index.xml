@@ -8,11 +8,11 @@
         <language>en-us</language>
         <copyright>奥古斯都-Augustus</copyright>
         <lastBuildDate>Fri, 20 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://sjhm104.github.io/tags/%E7%8E%B0%E4%BB%A3c++/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>C&#43;&#43;类型推导与初始化</title>
-        <link>https://sjhm104.github.io/p/c-%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+        <title>C&#43;&#43; 现代特性系列（一）：类型推导与泛型编程</title>
+        <link>https://sjhm104.github.io/p/c-%E7%8E%B0%E4%BB%A3%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%E4%B8%80%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/</link>
         <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://sjhm104.github.io/p/c-%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+        <guid>https://sjhm104.github.io/p/c-%E7%8E%B0%E4%BB%A3%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%E4%B8%80%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/</guid>
         <description>&lt;h1 id=&#34;c-现代特性系列一类型推导与泛型编程&#34;&gt;C++ 现代特性系列（一）：类型推导与泛型编程
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;现代 C++ 通过强大的类型推导和泛型编程特性，让代码既保持类型安全，又极大提升了表达力和开发效率。本文将带你系统学习 &lt;code&gt;auto&lt;/code&gt;、&lt;code&gt;decltype&lt;/code&gt;、泛型 Lambda、折叠表达式、变量模板以及 C++20 引入的概念（Concepts）等核心特性。&lt;/p&gt;
